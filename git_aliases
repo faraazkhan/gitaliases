@@ -1,0 +1,46 @@
+# Git Aliases
+
+alias gst='git status' # regular status
+alias gd='git diff' # see a diff of all tracked files
+alias gl='git pull' # git fetch from remote and merge
+alias gup='git pull --rebase' # applies all changes from remote first and replays yours on top..instead of just merging
+alias gp='git push' #push committed changes to remote
+alias gc='git commit -v' #perform a commit in verbose mode
+alias gc!='git commit -v --amend' #modify the last commit in verbose mode
+alias gca='git commit -v -a' #automatically add changes to all tracked files and commit
+alias gca!='git commit -v -a --amend' #automatically add changes to all tracked files and amend
+alias gcmsg='git commit -m' # commit all added /staged changes with a message
+alias gco='git checkout' # checkout a specified branch
+alias gcm='git checkout master' #checkout the master branch
+alias gr='git remote' #list remote names
+alias grv='git remote -v' #list remote names and urls
+alias grmv='git remote rename' #rename an existing remote
+alias grrm='git remote remove' #remove an existing remote
+alias grset='git remote set-url' #change url for an existing remote
+alias grup='git remote update' #fetch all remotes
+alias grbi='git rebase -i' #start interactive rebase
+alias grbc='git rebase --continue' #continue a started rebase
+alias grba='git rebase --abort' #abort current rebase
+alias gb='git branch' 
+alias gbn='git branch -e' #create a new branch
+alias gbd='git branch -d' # delete an existing branch on your local
+alias gba='git branch -a' # list all branches including remotes
+alias gcount='git shortlog -sn' #summarize commit counts by author
+alias gcl='git config --list' #list all configuration for the rep
+alias gcp='git cherry-pick' #cherry pick a commit
+alias glg='git log --stat --max-count=10' 
+alias glgg='git log --graph --max-count=10'
+alias glgga='git log --graph --decorate --all'
+alias glo='git log --oneline'
+alias gss='git status -s' #log with summary only
+alias ga='git add' #stage files for commit
+alias ga!='git add -A' #stage ALL changes for commit
+alias gm='git merge'
+alias grh='git reset HEAD' #soft reset, only unstages changes
+alias grhh='git reset HEAD --hard' #hard reset...undoes changes
+alias gclean='git reset --hard && git clean -dfx' #hard reset changes and delete all untracked files and folders
+alias gwc='git whatchanged -p --abbrev-commit --pretty=medium' #see what has changed
+alias gsts='git stash show --text' #show actual changes from stash
+alias gsta='git stash' #stash unstaged changes
+alias gstp='git stash pop' #add changes from stash to working tree
+alias gstd='git stash drop' #delete stash
