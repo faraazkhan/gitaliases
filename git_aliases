@@ -44,3 +44,61 @@ alias gsts='git stash show --text' #show actual changes from stash
 alias gsta='git stash' #stash unstaged changes
 alias gstp='git stash pop' #add changes from stash to working tree
 alias gstd='git stash drop' #delete stash
+
+## Some functions to simplify the git rebase workflow using topical branches. 
+function new_feature() {
+  git checkout develop
+  git pull
+  git checkout -b feature/$1
+  git push -u origin feature/$1
+}
+
+function get_feature() {
+  git fetch origin
+  git checkout --track origin/feature/$1
+}
+
+function checkout(){
+  git checkout feature/$1
+}
+
+function rebase() {
+  git fetch origin
+  current_branch
+  if ! [[ $CURRENT_BRANCH =~ ^feature ]]; then 
+    echo '**********ERROR****************'
+    echo 'You have the following features in progress:'
+    feature_list
+    echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
+    echo 'Please checkout the feature you want to rebase against develop and try again'
+  else
+    git rebase origin/develop
+  fi
+}
+
+function push() {
+  echo 'Have you rebased against develop?(y/n)'
+  read line
+  if [[ $line == 'y' ]]; then
+    echo 'pushing your changes to remote'
+    git push
+  else
+    echo 'did not push your changes to remote'
+    echo 'Please rebase against develop first'
+    echo 'to rebase checkout <your feature> and'
+    echo 'rebase'
+  fi
+}
+
+function current_branch() {
+  export CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+}
+
+function exit_error() {
+  echo $1
+    return 3
+}
+
+function feature_list(){
+  git branch -a | grep -v remotes | grep -v origin | grep feature/ | cut -c 11-100
+}
