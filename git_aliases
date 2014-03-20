@@ -43,6 +43,7 @@ alias gsts='git stash show --text' #show actual changes from stash
 alias gsta='git stash' #stash unstaged changes
 alias gstp='git stash pop' #add changes from stash to working tree
 alias gstd='git stash drop' #delete stash
-source workflow
+BASEDIR=$(dirname $0)
+source $BASEDIR/workflow
 
 

@@ -79,7 +79,9 @@ irrecoverable and always consult / inform other people using the same
 branch since they will have to delete that branch and pull again.  
 
 ```
-overwrite
+overwrite <feature_name>
+example: 
+overwrite DFCPOC-37_Filters
 ```
 
 To undo all your changes and return to the last commit on Gitlab.
@@ -89,4 +91,22 @@ really hate the code you just wrote and never want to see it again
 :)    
 ```
 undo_changes
+```
+
+To see your recent activities  
+```
+whatdidido
+```
+
+To see your last commit 
+```
+last_commit
+```
+
+To see more history
+Warning: I have seen this one crash a few git bash sessions on
+windows. If it happens to you, just close your terminal and start
+again
+```
+show_history
 ```

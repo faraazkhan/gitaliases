@@ -81,7 +81,7 @@ function overwrite() {
  echo 'If this branch is being used by others, they may lose their changes'
  echo 'Are you sure you want to do this(y/n)?'
  read response
- if [[response == 'y']]; then
+ if [[ $response == 'y' ]]; then
    git checkout feature/$1
    git push --force
  else 
@@ -90,14 +90,26 @@ function overwrite() {
 }
 
 # undo all changes reset 
-
 function undo_changes() {
  echo 'This will permanently delete all your changes. You cannot retrieve these again. Proceed?(y/n)'
  read response
- if [[response == 'y']]; then
+ if [[ $response == 'y' ]]; then
+   echo 'resetting all tracked changes'
    git reset HEAD --hard
  else
    echo 'No changes made'
- fi;
+ fi
+}
+
+function show_history(){
+ glo
+}
+
+function last_commit(){
+ git diff "HEAD^..HEAD"
+}
+
+function whatdidido(){
+ git reflog
 }
 
