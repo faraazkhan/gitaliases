@@ -28,7 +28,9 @@ function get_latest() {
     echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
     echo 'Please checkout the feature you want to get latest from develop on and try again'
   else
+    echo 'Merging develop from Gitlab'
     git merge origin/develop
+    check_if_updated
   fi
 }
 
@@ -41,6 +43,7 @@ function push() {
     echo 'Are you sure you want to push without getting latest?(y/n)'
     read response
     if [[ $response == 'y' ]]; then
+    echo 'Pushing your changes to Gitlab now'
     git push
     fi
   fi
@@ -65,12 +68,14 @@ function feature_list(){
 # Commit ALL your changes
 function commit-all(){
   cleanup
+  echo 'Adding all your changes to index'
   git add -A
   git commit
 }
 
 # Delete all merge files
 function cleanup(){
+  echo 'Deleting all .orig files'
   rm -rf **/*.orig > /dev/null 2>&1
 }
 
