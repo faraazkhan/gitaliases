@@ -34,16 +34,15 @@ function get_latest() {
 
 # push changes to gitlab..but first verify you have the latest
 function push() {
-  echo 'Do you have the latest from develop?(y/n)'
-  read response
-  if [[ $response == 'y' ]]; then
-    echo 'pushing your changes to remote'
+  check_if_updated
+  if [[ $is_updated == 'true' ]]; then
     git push
   else
-    echo 'did not push your changes to remote'
-    echo 'Please get_latest from develop first'
-    echo 'to get latest from develop checkout <your feature> and'
-    echo 'type get_latest'
+    echo 'Are you sure you want to push without getting latest?(y/n)'
+    read response
+    if [[ $response == 'y' ]]; then
+    git push
+    fi
   fi
 }
 
@@ -111,5 +110,26 @@ function last_commit(){
 
 function whatdidido(){
  git reflog
+}
+
+# Check if the branch has the latest from develop -- experimental
+function check_if_updated(){
+git fetch origin
+latestinbranch=`git merge-base HEAD origin/develop`
+latestondevelop=`git rev-list origin/develop -n 1`
+ if [[ $latestondevelop == $latestinbranch ]]; then
+   echo 'You seem to have the latest from develop'
+   is_updated='true'
+ else 
+   echo 'You do not have the latest from develop'
+   echo 'Would you like to get latest before you proceed?(y/n)'
+   read response
+   if [[ $response == 'y' ]]; then
+     get_latest
+   else
+     echo 'You have chosen to proceed without getting latest'
+     is_updated='false'
+   fi
+ fi
 }
 
