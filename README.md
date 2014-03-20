@@ -40,14 +40,14 @@ example:
 checkout DFCPOC-37_Filters
 ```
 
-To Rebase your feature against develop (i.e Get Latest from Develop):  
+To Get Latest changes from develop in your feature
 
 ```
 checkout <feature_name> #first checkout the feature
-rebase
+get_latest
 example:
 checkout DFCPOC-37_Filters
-rebase
+get_latest
 ```
 To Push your changes:  
 
@@ -58,4 +58,35 @@ To see all features currently in progress on your local
 
 ```
 feature_list
+```
+
+To commit all your changes (including untracked files):  
+
+```
+commit-all 
+```
+
+To clean up .orig files after resolving conflicts
+
+```
+cleanup
+```
+
+To overwrite history on server. For example when git complains that
+your local branch has "diverged" from origin after a merge/rebase. 
+Warning: Use this with caution, this will make some commits
+irrecoverable and always consult / inform other people using the same
+branch since they will have to delete that branch and pull again.  
+
+```
+overwrite
+```
+
+To undo all your changes and return to the last commit on Gitlab.
+Warning: This is also a dangerous thing, it will permanently delete all
+your changes and they cannot be recovered. Do this only if you
+really hate the code you just wrote and never want to see it again
+:)    
+```
+undo_changes
 ```
