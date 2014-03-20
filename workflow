@@ -21,16 +21,17 @@ function checkout(){
 function get_latest() {
   git fetch origin
   current_branch
-  if ! [[ $CURRENT_BRANCH =~ ^feature ]]; then 
+  if echo $CURRENT_BRANCH | grep -E '^feature' > /dev/null  # Git Bash does not support =~
+  then
+    echo 'Merging develop from Gitlab'
+    git merge origin/develop
+    check_if_updated
+  else
     echo '**********ERROR****************'
     echo 'You have the following features in progress:'
     feature_list
     echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
     echo 'Please checkout the feature you want to get latest from develop on and try again'
-  else
-    echo 'Merging develop from Gitlab'
-    git merge origin/develop
-    check_if_updated
   fi
 }
 
