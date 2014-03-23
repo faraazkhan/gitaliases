@@ -107,7 +107,7 @@ function undo_changes() {
 }
 
 function show_history(){
- glo 
+ glo | tail -n100
 }
 
 function last_commit(){
