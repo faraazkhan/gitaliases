@@ -21,14 +21,17 @@ function checkout(){
 function get_latest() {
   git fetch origin
   current_branch
-  if ! [[ $CURRENT_BRANCH =~ ^feature ]]; then 
+  if echo $CURRENT_BRANCH | grep -E '^feature' > /dev/null  # Git Bash does not support =~
+  then
+    echo 'Merging develop from Gitlab'
+    git merge origin/develop
+    check_if_updated
+  else
     echo '**********ERROR****************'
     echo 'You have the following features in progress:'
     feature_list
     echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
     echo 'Please checkout the feature you want to get latest from develop on and try again'
-  else
-    git merge origin/develop
   fi
 }
 
@@ -41,6 +44,7 @@ function push() {
     echo 'Are you sure you want to push without getting latest?(y/n)'
     read response
     if [[ $response == 'y' ]]; then
+    echo 'Pushing your changes to Gitlab now'
     git push
     fi
   fi
@@ -65,12 +69,14 @@ function feature_list(){
 # Commit ALL your changes
 function commit-all(){
   cleanup
+  echo 'Adding all your changes to index'
   git add -A
   git commit
 }
 
 # Delete all merge files
 function cleanup(){
+  echo 'Deleting all .orig files'
   rm -rf **/*.orig > /dev/null 2>&1
 }
 
@@ -101,7 +107,7 @@ function undo_changes() {
 }
 
 function show_history(){
- glo
+ glo | tail -n100
 }
 
 function last_commit(){
@@ -116,7 +122,7 @@ function whatdidido(){
 function check_if_updated(){
 git fetch origin
 latestinbranch=`git merge-base HEAD origin/develop`
-latestondevelop=`git rev-list origin/develop -n 1`
+latestondevelop=`git rev-parse origin/develop`
  if [[ $latestondevelop == $latestinbranch ]]; then
    echo 'You seem to have the latest from develop'
    is_updated='true'
@@ -132,4 +138,17 @@ latestondevelop=`git rev-list origin/develop -n 1`
    fi
  fi
 }
+
+#Automatic Updates -- Experimental
+git --git-dir=$HOME/gitaliases/.git fetch
+latestonremote=`git --git-dir=$HOME/gitaliases/git merge-base HEAD origin/master`
+latestonlocal=`git --git-dir=$HOME/gitaliases/git merge-base HEAD master`
+if ! [[ $latestonremote == $latestonlocal ]]; then
+  echo 'An update to CWS Git Workflow is available now. Would you like to update?(y/n)'
+  read response
+  if [[ $response == 'y' ]]; then
+   git --git-dir=$HOME/gitaliases/.git fetch
+   git --git-dir=$HOME/gitaliases/.git --work-tree=$HOME/gitaliases merge
+  fi
+fi
 
