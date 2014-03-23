@@ -139,3 +139,16 @@ latestondevelop=`git rev-parse origin/develop`
  fi
 }
 
+#Automatic Updates -- Experimental
+git --git-dir=$HOME/gitaliases/.git fetch
+latestonremote=`git --git-dir=$HOME/gitaliases/git merge-base HEAD origin/master`
+latestonlocal=`git --git-dir=$HOME/gitaliases/git merge-base HEAD master`
+if ! [[ $latestonremote == $latestonlocal ]]; then
+  echo 'An update to CWS Git Workflow is available now. Would you like to update?(y/n)'
+  read response
+  if [[ $response == 'y' ]]; then
+   git --git-dir=$HOME/gitaliases/.git fetch
+   git --git-dir=$HOME/gitaliases/.git --work-tree=$HOME/gitaliases merge
+  fi
+fi
+
