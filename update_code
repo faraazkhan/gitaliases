@@ -1,0 +1,66 @@
+# Check if the branch has the latest from develop -- experimental
+function check_if_updated(){
+git fetch origin
+latestinbranch=`git merge-base HEAD origin/develop`
+latestondevelop=`git rev-parse origin/develop`
+ if [[ $latestondevelop == $latestinbranch ]]; then
+   echo 'You seem to have the latest from develop'
+   is_updated='true'
+ else
+   echo 'You do not have the latest from develop'
+   echo 'Would you like to get latest before you proceed?(y/n)'
+   read response
+   if [[ $response == 'y' ]]; then
+     get_latest
+   else
+     echo 'You have chosen to proceed without getting latest'
+     is_updated='false'
+   fi
+ fi
+}
+
+# Merge origin/develop into feature branch
+function merge_develop(){
+  echo 'Merging develop from Gitlab'
+  git merge origin/develop
+}
+
+# Rebase feature branch against origin/develop
+function rebase_against_develop(){
+ echo 'Rebasing against origin/develop'
+ git rebase develop
+}
+
+# Get the latest from Develop
+function get_latest() {
+  git fetch origin
+  current_branch
+  if echo $CURRENT_BRANCH | grep -E '^feature' > /dev/null  # Git Bash does not support =~
+  then
+    require_clean_work_tree merge_develop
+    check_if_updated
+  else
+    echo '**********ERROR****************'
+    echo 'You have the following features in progress:'
+    feature_list
+    echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
+    echo 'Please checkout the feature you want to get latest from develop on and try again'
+  fi
+}
+
+# push changes to gitlab..but first verify you have the latest
+function push() {
+  check_if_updated
+  if [[ $is_updated == 'true' ]]; then
+    git push
+  else
+    echo 'Are you sure you want to push without getting latest?(y/n)'
+    read response
+    if [[ $response == 'y' ]]; then
+    echo 'Pushing your changes to Gitlab now'
+    git push
+    fi
+  fi
+}
+
+

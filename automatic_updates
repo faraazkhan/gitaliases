@@ -1,0 +1,13 @@
+# Automatic Updates -- Experimental
+git --git-dir=$workflow_git_dir fetch > /dev/null 2>&1
+latestonremote=`git --git-dir=$workflow_git_dir merge-base HEAD origin/master`
+latestonlocal=`git --git-dir=$workflow_git_dir merge-base HEAD master`
+if ! [[ $latestonremote == $latestonlocal ]]; then
+  echo 'An update to CWS Git Workflow is available now. Would you like to update?(y/n)'
+  read response
+  if [[ $response == 'y' ]]; then
+    git --git-dir=$workflow_git_dir fetch
+    git --git-dir=$workflow_git_dir --work-tree=$workflow_work_tree merge
+  fi
+fi
+
