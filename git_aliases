@@ -43,7 +43,7 @@ alias gsts='git stash show --text' #show actual changes from stash
 alias gsta='git stash' #stash unstaged changes
 alias gstp='git stash pop' #add changes from stash to working tree
 alias gstd='git stash drop' #delete stash
-CWS_WORKFLOW_DIR=$(dirname $0)
-source $CWS_WORKFLOW_DIR/workflow
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $BASEDIR/workflow
 
 
