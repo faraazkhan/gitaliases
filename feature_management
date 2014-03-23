@@ -17,8 +17,9 @@ function delete_feature() {
  echo 'Warning: You are deleting a branch. If this branch is not on Gitlab, then there is no way to recover it'
  echo 'Are you sure?(y/n)'
  read response
- if [[ $reponse == 'y' ]]; then
-   git branch -D features/$1
+ if [[ $response == 'y' ]]; then
+   echo 'Response is y'
+   git branch -D feature/$1
  else 
   echo 'Did not delete branch feature/'; echo -n $1
  fi
