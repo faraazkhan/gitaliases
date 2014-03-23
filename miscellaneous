@@ -1,0 +1,71 @@
+
+# Checkout a specific feature or origin/develop for local testing
+function checkout(){
+  if [[ $1 == 'develop' ]]; then
+   require_clean_work_tree git checkout origin/develop
+  else
+    require_clean_work_tree git checkout feature/$1
+  fi
+}
+
+
+# Commit ALL your changes
+function commit-all(){
+  current_branch
+# disallow commits in protected branches
+if ! [[ $CURRENT_BRANCH == 'develop' || $CURRENT_BRANCH == 'master' || $CURRENT_BRANCH == 'origin/develop' || $CURRENT_BRANCH == 'origin/master']]; then
+    cleanup
+    echo 'Adding all your changes to index'
+    git add -A
+    git commit
+else
+ echo 'Cannot directly commit changes to '; echo -n $CURRENT_BRANCH
+fi
+}
+
+# Delete all merge files
+function cleanup(){
+  echo 'Deleting all .orig files'
+  rm -rf **/*.orig > /dev/null 2>&1
+}
+
+# Overwrite feature branch on gitlab
+function overwrite() {
+ echo 'Warning: You are about to overwrite the history on the '; echo -n $1; echo ' branch'
+ echo 'If this branch is being used by others, they may lose their changes'
+ echo 'Are you sure you want to do this(y/n)?'
+ read response
+ if [[ $response == 'y' ]]; then
+   git checkout feature/$1
+   git push --force
+ else
+  echo 'Phew! That was close! No changes were made'
+ fi
+}
+
+# undo all changes reset
+function undo_changes() {
+ echo 'This will permanently delete all your changes. You cannot retrieve these again. Proceed?(y/n)'
+ read response
+ if [[ $response == 'y' ]]; then
+   echo 'resetting all tracked changes'
+   git reset HEAD --hard
+ else
+   echo 'No changes made'
+ fi
+}
+
+function show_history(){
+ glo | tail -n100
+}
+
+function last_commit(){
+ git diff "HEAD^..HEAD"
+}
+
+function whatdidido(){
+ git reflog
+}
+
+
+

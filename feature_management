@@ -1,0 +1,24 @@
+# Create a new feature branch
+function new_feature() {
+  git checkout develop
+  git pull
+  git checkout -b feature/$1
+  git push -u origin feature/$1
+}
+
+# Get someone else's public feature branch
+function get_feature() {
+  git fetch origin
+  git checkout --track origin/feature/$1
+}
+
+# Delete Feature
+function delete_feature() {
+ echo 'Warning: You are deleting a branch. If this branch is not on Gitlab, then there is no way to recover it'
+ echo 'Are you sure?(y/n)'
+ read response
+ if [[ $reponse == 'y' ]]; then
+   git branch -D features/$1
+ else 
+  echo 'Did not delete branch feature/'; echo -n $1
+}
