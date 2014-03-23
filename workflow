@@ -122,7 +122,7 @@ function whatdidido(){
 function check_if_updated(){
 git fetch origin
 latestinbranch=`git merge-base HEAD origin/develop`
-latestondevelop=`git rev-list origin/develop -n 1`
+latestondevelop=`git rev-parse origin/develop`
  if [[ $latestondevelop == $latestinbranch ]]; then
    echo 'You seem to have the latest from develop'
    is_updated='true'
