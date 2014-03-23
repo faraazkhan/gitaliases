@@ -21,4 +21,5 @@ function delete_feature() {
    git branch -D features/$1
  else 
   echo 'Did not delete branch feature/'; echo -n $1
+ fi
 }
