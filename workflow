@@ -52,4 +52,5 @@ require_clean_work_tree () {
 source $CWS_WORKFLOW_DIR/automatic_updates
 source $CWS_WORKFLOW_DIR/update_code
 source $CWS_WORKFLOW_DIR/feature_management
+source $CWS_WORKFLOW_DIR/miscellaneous
 
