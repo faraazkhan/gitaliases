@@ -13,7 +13,8 @@ function checkout(){
 function commit-all(){
   current_branch
 # disallow commits in protected branches
-if ! [[ $CURRENT_BRANCH == 'develop' || $CURRENT_BRANCH == 'master' || $CURRENT_BRANCH == 'origin/develop' || $CURRENT_BRANCH == 'origin/master']]; then
+if ! [[ $CURRENT_BRANCH == 'develop' || $CURRENT_BRANCH == 'master' || $CURRENT_BRANCH == 'origin/develop' || $CURRENT_BRANCH == 'origin/master' ]]
+then
     cleanup
     echo 'Adding all your changes to index'
     git add -A
