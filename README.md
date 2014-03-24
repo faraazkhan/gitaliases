@@ -57,7 +57,7 @@ push
 To see all features currently in progress on your local  
 
 ```
-feature_list
+list_features
 ```
 
 To commit all your changes (including untracked files):  

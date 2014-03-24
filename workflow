@@ -14,7 +14,7 @@ function exit_error() {
 }
 
 # List all feature branches on the local
-function feature_list(){
+function list_features(){
   git branch -a | grep -v remotes | grep -v origin | grep feature/ | cut -c 11-100
 }
 

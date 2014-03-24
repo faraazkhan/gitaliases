@@ -1,22 +1,40 @@
 # Check if the branch has the latest from develop -- experimental
 function check_if_updated(){
-git fetch origin
-latestinbranch=`git merge-base HEAD origin/develop`
-latestondevelop=`git rev-parse origin/develop`
- if [[ $latestondevelop == $latestinbranch ]]; then
-   echo 'You seem to have the latest from develop'
-   is_updated='true'
+  git fetch origin
+  current_branch
+  latestinbranch=`git merge-base HEAD origin/develop`
+  check_if_feature_is_updated
+  has_latest_from_develop
+}
+
+function check_if_feature_is_updated(){
+ latestfeatureonremote=`git rev-parse origin/$CURRENT_BRANCH`
+ latestfeatureonlocal=`git merge-base HEAD origin/$CURRENT_BRANCH`
+ if [[ latestfeatureonremote == latestfeatureonlocal ]]; then
+  echo 'You seem to have the latest on your feature'
  else
-   echo 'You do not have the latest from develop'
-   echo 'Would you like to get latest before you proceed?(y/n)'
-   read response
-   if [[ $response == 'y' ]]; then
-     get_latest
-   else
-     echo 'You have chosen to proceed without getting latest'
-     is_updated='false'
-   fi
+  echo 'You do not have the latest code on this feature from Gitlab'
+  echo 'Getting latest from gitlab now'
+  git pull
  fi
+}
+
+function has_latest_from_develop() {
+  latestondevelop=`git rev-parse origin/develop`
+   if [[ $latestondevelop == $latestinbranch ]]; then
+     echo 'You seem to have the latest from develop'
+     is_updated='true'
+   else
+     echo 'You do not have the latest from develop'
+     echo 'Would you like to get latest before you proceed?(y/n)'
+     read response
+     if [[ $response == 'y' ]]; then
+       get_latest
+     else
+       echo 'You have chosen to proceed without getting latest'
+       is_updated='false'
+     fi
+   fi
 }
 
 # Merge origin/develop into feature branch
@@ -42,7 +60,7 @@ function get_latest() {
   else
     echo '**********ERROR****************'
     echo 'You have the following features in progress:'
-    feature_list
+    list_features
     echo "But You are currently on the:"; echo -n $CURRENT_BRANCH; echo ' branch'
     echo 'Please checkout the feature you want to get latest from develop on and try again'
   fi
@@ -54,7 +72,7 @@ function push() {
   if [[ $is_updated == 'true' ]]; then
     git push
   else
-    echo 'Are you sure you want to push without getting latest?(y/n)'
+    echo 'Are you sure you want to push without getting latest from develop?(y/n)'
     read response
     if [[ $response == 'y' ]]; then
     echo 'Pushing your changes to Gitlab now'
