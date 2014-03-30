@@ -1,4 +1,3 @@
-
 # Checkout a specific feature or origin/develop for local testing
 function checkout(){
   if [[ $1 == 'develop' ]]; then
@@ -56,14 +55,17 @@ function undo_changes() {
  fi
 }
 
+# see the last 100 commits in oneline summary
 function show_history(){
- glo | tail -n100
+ glo | head -n100
 }
 
+# see the detailed diff from last commit
 function last_commit(){
  git diff "HEAD^..HEAD"
 }
 
+# see full history
 function whatdidido(){
  git reflog
 }
